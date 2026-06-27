@@ -1,0 +1,19 @@
+# --- NIEMALS committen: sensible/operative Daten ---
+.env
+*.env
+!*.env.example
+# Rules of Engagement / Scope mit echten Zielen
+**/scope.txt
+# Engagement-Artefakte, Traces, Logs, nachgeladene Tools
+**/workspace/
+**/traces/
+# RAG-Wissensbasis (kann interne/lizenzierte Doku enthalten)
+**/knowledge/
+*.gguf
+# Build-Artefakte
+**/.build/
+# Secrets/Keys
+*.key
+*.pem
+id_*
+secrets*
