@@ -21,6 +21,9 @@ für PoC-/Exploit-Generierung zudem durch Guardrails beschnitten und meldepflich
 - **Open-WebUI-Sektion** mit Playbooks — nur Ziel/Netz/App eintragen.
 - **RAG-Wissensbasis**: MITRE ATT&CK + regulatorische Dokumente.
 - **NVD-Anreicherung**: automatische CVE-Fakten (CVSS/CWE/Referenzen) aus NIST NVD.
+- **Threat-Intel-/Exploit-Feeds**: täglich aktualisierte lokale Roh-Korpora (Exploit-DB,
+  Nuclei, PoC-in-GitHub, Metasploit) + High-Signal-Indizes (CISA KEV, EPSS, ThreatFox, OTX)
+  — eingebettet ins RAG und vom Operator referenzierbar.
 - **Web-Recherche** über self-hosted SearXNG (keine Cloud-API).
 
 ## Architektur
@@ -34,8 +37,9 @@ flowchart TB
       WUI["Open WebUI<br/>Chat · RAG · Playbooks"]
       QD["Qdrant<br/>Vektor-DB"]
       SX["SearXNG<br/>Web-Recherche"]
-      CAI["CAI-Operator (Kali)<br/>autonome Ausführung · HITL"]
+      CAI["CAI-Operator (Ubuntu 24.04)<br/>autonome Ausführung · HITL"]
     end
+    FEED["Threat-Intel-Feeds<br/>Roh-Korpus + Indizes<br/>(täglich, read-only)"]
   end
   Analyst(["Security-Analyst"]) --> WUI
   WUI --> OLL
@@ -45,6 +49,8 @@ flowchart TB
   CAI --> SX
   CAI -.HITL-Freigabe.-> Targets["autorisierte Test-Ziele"]
   KB[("MITRE ATT&CK · DORA/TIBER/BAIT")] --> QD
+  FEED --> QD
+  FEED -. grep/zitieren .-> CAI
   NVD["NIST NVD CVE-API<br/>CVSS · CWE · Refs"] --> WUI
   NVD --> CAI
 ```
@@ -58,6 +64,7 @@ flowchart TB
 6. [Compliance-Mapping (DORA/TIBER/MITRE)](docs/06-compliance.md)
 7. [Security & Sanitization](docs/07-security-sanitization.md)
 8. [NVD-Anreicherung](docs/08-nvd-enrichment.md)
+9. [Threat-Intel-/Exploit-Feeds & täglicher Refresh](docs/09-threat-intel-feeds.md)
 
 ## Wichtige Abgrenzung
 Diese Plattform ist ein **Werkzeug** für internes Testing, Scoping und Reporting —
