@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IceITSOAI — Offensive-Security-LLM-Pipeline für autorisiertes Bank-Testing</title>
+<style>
+:root { --primary:#1a56db; --primary-light:#e8effc; --bg:#f8fafc; --card:#ffffff; --text:#1e293b; --text-muted:#64748b; --border:#e2e8f0; --accent:#059669; --accent-light:#ecfdf5; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+.container { max-width:1100px; margin:0 auto; padding:0 24px; }
+header { background:linear-gradient(135deg,#1e3a5f 0%,#1a56db 100%); color:white; padding:60px 0 50px; }
+header h1 { font-size:2.5rem; margin-bottom:12px; display:flex; align-items:center; gap:16px; }
+header .icon { width:48px; height:48px; flex-shrink:0; }
+header p { font-size:1.15rem; opacity:0.9; max-width:700px; }
+.badge { display:inline-block; background:rgba(255,255,255,0.2); padding:4px 12px; border-radius:20px; font-size:0.85rem; margin-top:16px; }
+nav { background:var(--card); border-bottom:1px solid var(--border); position:sticky; top:0; box-shadow:0 1px 3px rgba(0,0,0,0.05); }
+nav .container { display:flex; overflow-x:auto; }
+nav a { padding:14px 20px; text-decoration:none; color:var(--text-muted); font-size:0.9rem; font-weight:500; white-space:nowrap; border-bottom:2px solid transparent; }
+nav a:hover { color:var(--primary); border-bottom-color:var(--primary); }
+section { padding:50px 0; }
+section:nth-child(even) { background:var(--card); }
+h2 { font-size:1.8rem; margin-bottom:24px; }
+h3 { font-size:1.2rem; margin:20px 0 12px; }
+.card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; margin-top:20px; }
+.card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:24px; box-shadow:0 1px 3px rgba(0,0,0,0.04); }
+section:nth-child(even) .card { background:var(--bg); }
+.card h3 { margin-top:0; color:var(--primary); }
+.card p { color:var(--text-muted); font-size:0.95rem; }
+table { width:100%; border-collapse:collapse; margin:16px 0; font-size:0.9rem; }
+th, td { padding:10px 14px; text-align:left; border-bottom:1px solid var(--border); }
+th { background:var(--primary-light); color:var(--primary); font-weight:600; }
+.mermaid-wrap { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:24px; margin:24px 0; overflow-x:auto; }
+section:nth-child(even) .mermaid-wrap { background:var(--bg); }
+pre:not(.mermaid) { background:#1e293b; color:#e2e8f0; padding:20px; border-radius:10px; overflow-x:auto; font-size:0.85rem; }
+code { background:var(--primary-light); padding:2px 6px; border-radius:4px; font-size:0.85rem; }
+pre code { background:none; padding:0; }
+.tech-grid { display:flex; flex-wrap:wrap; gap:12px; margin:20px 0; }
+.tech-item { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:10px 18px; font-size:0.9rem; font-weight:500; }
+section:nth-child(even) .tech-item { background:var(--bg); }
+footer { background:#1e293b; color:#94a3b8; padding:40px 0; text-align:center; font-size:0.85rem; }
+footer a { color:#60a5fa; text-decoration:none; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true, theme:'default'});</script>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>
+      IceITSOAI
+    </h1>
+    <p>Selbst-gehostete, nicht-zensierte LLM-Plattform für autorisiertes internes Security-Testing im Finanzsektor — vollständig on-premise, ohne Cloud-LLM.</p>
+    <span class="badge">DORA · TIBER-EU · BaFin · EZB · MITRE ATT&amp;CK</span>
+  </div>
+</header>
+
+<nav>
+  <div class="container">
+    <a href="#ueberblick">Überblick</a>
+    <a href="#architektur">Architektur</a>
+    <a href="#techstack">Tech-Stack</a>
+    <a href="#quickstart">Quickstart</a>
+  </div>
+</nav>
+
+<section id="ueberblick">
+  <div class="container">
+    <h2>Überblick</h2>
+    <p>IceITSOAI ist eine selbst-gehostete Offensive-Security-LLM-Pipeline für <strong>autorisiertes</strong> internes Security-Testing im Finanzsektor. Zu jedem Befund erzeugt sie ein Bedrohungsszenario, den realen Attack-Path (gemappt auf MITRE ATT&amp;CK), einen validierungspflichtigen Proof-of-Concept sowie ein Mapping auf DORA, TIBER-EU, BaFin und EZB-Erwartungen — komplett ohne Cloud-Abhängigkeit, damit kein zusätzlicher ICT-Drittdienstleister im Sinne von DORA Art. 28–30 entsteht.</p>
+    <div class="card-grid">
+      <div class="card">
+        <h3>Compliance-Reporting</h3>
+        <p>Jeder Befund folgt einem festen Schema: Asset/Scope → Threat Scenario → Attack Path (MITRE) → PoC → Impact → Regulatory Mapping → Remediation → Residual Risk.</p>
+      </div>
+      <div class="card">
+        <h3>Agentischer Operator</h3>
+        <p>Ein CAI-basierter Operator führt autorisierte Schritte agentisch aus — mit Human-in-the-Loop-Freigabe vor jedem Befehl und vollständigem Audit-Trace.</p>
+      </div>
+      <div class="card">
+        <h3>RAG-Wissensbasis &amp; Anreicherung</h3>
+        <p>MITRE ATT&amp;CK und regulatorische Dokumente als Vektor-Wissensbasis; automatische CVE-Anreicherung (CVSS/CWE/Referenzen) aus der NIST NVD gegen Modell-Halluzinationen.</p>
+      </div>
+      <div class="card">
+        <h3>Lokaler Threat-Intel-Korpus</h3>
+        <p>Täglich aktualisierte Roh- und Index-Feeds (Exploit-DB, Nuclei, PoC-in-GitHub, Metasploit, CISA KEV, EPSS, ThreatFox, OTX) — referenzierbar mit Quellpfad, ohne flüchtige Web-Suche.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="architektur">
+  <div class="container">
+    <h2>Architektur</h2>
+    <p>Alle Komponenten laufen als Docker-Stack auf einem lokalen GPU-Host. Ein Security-Analyst arbeitet über Open WebUI mit Playbooks gegen die SecAnalyst-Modelle, ergänzt um RAG-Wissensbasis und Web-Recherche. Der CAI-Operator führt autorisierte Schritte agentisch mit Human-in-the-Loop-Freigabe gegen die Testziele aus. Ein täglich aktualisierter Threat-Intel-/Exploit-Feed sowie die NIST-NVD-API reichern Befunde faktenbasiert an.</p>
+    <div class="mermaid-wrap">
+      <pre class="mermaid">
+flowchart TB
+  Analyst(["Security-Analyst"])
+  subgraph Host["GPU-Host (on-premise)"]
+    direction TB
+    OLL["Ollama — LLM-Inferenz<br/>secanalyst:dora / :operator / :uncensored"]
+    WUI["Open WebUI<br/>Chat · Playbooks (/pb-*)"]
+    QD["Qdrant<br/>RAG Vektor-DB"]
+    SX["SearXNG<br/>self-hosted Web-Recherche"]
+    CAI["CAI-Operator<br/>agentisch · Human-in-the-Loop"]
+    FEED["Threat-Intel-/Exploit-Feeds<br/>täglicher Refresh, read-only"]
+  end
+  KB[("MITRE ATT&CK ·<br/>DORA / TIBER / BaFin / EZB")]
+  NVD["NIST NVD CVE-API<br/>CVSS · CWE · Referenzen"]
+  TGT["autorisierte Test-Ziele<br/>(Scope / Rules of Engagement)"]
+
+  Analyst --> WUI
+  WUI --> OLL
+  WUI --> QD
+  WUI --> SX
+  WUI --> NVD
+  KB --> QD
+  FEED --> QD
+  CAI --> OLL
+  CAI --> SX
+  CAI --> NVD
+  FEED -. grep + zitieren .-> CAI
+  CAI == HITL-Freigabe ==> TGT
+      </pre>
+    </div>
+    <h3>Datenfluss einer Befund-Erzeugung</h3>
+    <p>Der Analyst wählt ein Playbook und trägt Ziel/Netz/App ein. Open WebUI zieht passende Passagen aus der RAG-Wissensbasis, holt optional aktuellen Kontext über SearXNG und lässt das gewählte SecAnalyst-Modell den Befund im festen Compliance-Schema erzeugen. Für den agentischen Pfad plant der CAI-Operator Schritte gegen das autorisierte Ziel, lässt sich jeden Befehl vom Analysten freigeben und speist das Ergebnis zurück ins Modell für den nächsten Schritt — vollständig auditiert.</p>
+  </div>
+</section>
+
+<section id="techstack">
+  <div class="container">
+    <h2>Tech-Stack</h2>
+    <div class="tech-grid">
+      <span class="tech-item">Ollama</span>
+      <span class="tech-item">WhiteRabbitNeo V3 (7B)</span>
+      <span class="tech-item">Qwen3-32B (abliterated)</span>
+      <span class="tech-item">Qwen2.5-Coder-32B</span>
+      <span class="tech-item">bge-m3 (Embeddings)</span>
+      <span class="tech-item">Open WebUI</span>
+      <span class="tech-item">Qdrant</span>
+      <span class="tech-item">SearXNG</span>
+      <span class="tech-item">CAI-Framework (Operator)</span>
+      <span class="tech-item">Ubuntu 24.04</span>
+      <span class="tech-item">Docker Compose</span>
+      <span class="tech-item">NIST NVD CVE-API</span>
+      <span class="tech-item">MITRE ATT&amp;CK (STIX)</span>
+      <span class="tech-item">Heretic (Abliteration)</span>
+    </div>
+    <h3>Modell-Rollen</h3>
+    <table>
+      <thead><tr><th>Rolle</th><th>Modell</th><th>Zweck</th></tr></thead>
+      <tbody>
+        <tr><td>Security-Primär</td><td>WhiteRabbitNeo V3 (7B)</td><td>SecOps-getunt, Exploit-PoC + Remediation</td></tr>
+        <tr><td>Reasoning/Unrestricted</td><td>Qwen3-32B <em>abliterated</em></td><td>ungefiltertes Reasoning ohne grundlose Verweigerung</td></tr>
+        <tr><td>Code/PoC</td><td>Qwen2.5-Coder-32B</td><td>sauberer Exploit-/Tooling-Code</td></tr>
+        <tr><td>Embeddings (RAG)</td><td>bge-m3</td><td>Wissensbasis-Vektorisierung</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="quickstart">
+  <div class="container">
+    <h2>Quickstart</h2>
+    <p>Grobe Reihenfolge für den Eigenbetrieb (Details siehe Repo-Dokumentation):</p>
+    <pre><code>cp .env.example .env && $EDITOR .env        # Secrets/Ports/Host setzen
+
+# 1) Modelle + Compliance-Modelfiles
+bash bootstrap.sh
+
+# 2) RAG-Wissensbasis (MITRE ATT&CK + Reg-Doku)
+bash rag/load-knowledge.sh
+
+# 3) Stack starten (Open WebUI, SearXNG, Qdrant, CAI-Operator)
+docker compose up -d
+
+# 4) Playbooks provisionieren
+export WEBUI_TOKEN='...'
+bash openwebui/provision.sh
+
+# 5) Agentischer Operator — Rules of Engagement pflegen!
+$EDITOR cai/scope.txt
+docker compose exec cai-operator cai</code></pre>
+    <p>Alle Platzhalter (Host, Ports, VLANs) sind vor dem Betrieb durch die eigene Umgebung zu ersetzen. Diese Doku-Seite und das Repo enthalten bewusst keine internen IPs, Hostnamen oder Zugangsdaten.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p><a href="https://github.com/icepaule/IceITSOAI">GitHub-Repo: icepaule/IceITSOAI</a> · <a href="https://icepaule.github.io/">Zur Portfolio-Übersicht</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
